@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: collabsphere_api
+    restart: unless-stopped
+    ports:
+      - "9999:9999"
+    environment:
+      - FLASK_ENV=development
+      - PORT=9999
+      - SECRET_KEY=collabsphere_super_secret_jwt_key_2026
+      - DATABASE_URI=sqlite:///default.db
+      # If using MS SQL Server container below:
+      # - DATABASE_URI=mssql+pymssql://sa:Aa%40123456@sqlserver:1433/FlaskApiDB
+    volumes:
+      - ./src:/app/src
+    # depends_on:
+    #   - sqlserver
+
+  # Optional: MS SQL Server service
+  # sqlserver:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   container_name: collabsphere_mssql
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - MSSQL_SA_PASSWORD=Aa@123456
+  #   ports:
+  #     - "1433:1433"
